@@ -5,7 +5,7 @@
   "description": "Poi plugin that recommends which ships to level next from an inventory export CSV",
   "license": "MIT",
   "author": {
-    "name": "kwt-klure"
+    "name": "Kan Recomentation contributors"
   },
   "keywords": [
     "poi",

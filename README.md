@@ -6,6 +6,13 @@
 
 This MVP reads a ship CSV exported from `KC Inventory Export`, evaluates your current roster against a curated remodel knowledge base, and returns a short recommendation list that is more useful than "closest remodel level only".
 
+The recommendation data is now built from a fixed snapshot pipeline:
+
+- external-style remodel facts are prepared as normalized source files
+- local editorial rules stay inspectable in-repo
+- build-time merge produces a deterministic snapshot consumed by the plugin
+- plugin runtime does not fetch wiki or web data directly
+
 ## What It Helps With
 
 The plugin highlights:
@@ -73,10 +80,22 @@ That tradeoff is intentional:
 - recommendation quality should stay inspectable
 - missing coverage should fail quietly into "uncovered", not into bad heuristic spam
 
+## Knowledge Snapshot Workflow
+
+Knowledge updates are split into source layers:
+
+- factual remodel data lives under `data/recommendation/sources`
+- editorial scoring and reason text live in a separate source layer
+- `npm run knowledge:build` merges those inputs into `src/recommendation/generated/knowledgeSnapshot.ts`
+- `npm run knowledge:check` verifies the committed snapshot is in sync
+
+This keeps future wiki/web updates on the build side instead of in the Poi runtime path.
+
 ## Development
 
 ```bash
 npm install
+npm run knowledge:build
 npm run typeCheck
 npm test -- --runInBand
 ```

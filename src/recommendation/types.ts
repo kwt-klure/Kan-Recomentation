@@ -47,8 +47,38 @@ export type UtilityTag =
 
 export type PayoffClass = 'high' | 'medium' | 'low'
 
+export type KnowledgeSourceKind = 'facts' | 'editorial'
+
+export type KnowledgeSourceSummary = {
+  id: string
+  kind: KnowledgeSourceKind
+  displayName: string
+  updatedOn: string
+  entryCount: number
+  referenceNote?: string
+}
+
+export type RemodelFactPatch = {
+  id: string
+  currentAliases?: string[]
+  targetName?: string
+  targetLevel?: number
+  rareMaterials?: RareMaterialType[]
+  otherRareMaterialLabels?: string[]
+}
+
+export type RemodelEditorialPatch = {
+  id: string
+  capabilityTags?: CapabilityTag[]
+  utilityTags?: UtilityTag[]
+  payoffClass?: PayoffClass
+  curatedPriority?: number
+  primaryReason?: string
+}
+
 export type RemodelKnowledgeEntry = {
   id: string
+  sourceIds: string[]
   currentAliases: string[]
   targetName: string
   targetLevel: number
@@ -59,6 +89,18 @@ export type RemodelKnowledgeEntry = {
   payoffClass: PayoffClass
   curatedPriority: number
   primaryReason: string
+}
+
+export type KnowledgeSnapshotMetadata = {
+  schemaVersion: number
+  snapshotVersion: string
+  sources: KnowledgeSourceSummary[]
+  totalEntries: number
+}
+
+export type KnowledgeSnapshot = {
+  metadata: KnowledgeSnapshotMetadata
+  entries: RemodelKnowledgeEntry[]
 }
 
 export type MaterialConstraintState = {

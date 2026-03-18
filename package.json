@@ -27,8 +27,10 @@
   ],
   "main": "src/index.ts",
   "scripts": {
-    "build": "npm run typeCheck",
-    "test": "jest",
+    "build": "npm run knowledge:check && npm run typeCheck",
+    "knowledge:build": "node scripts/build-knowledge-snapshot.cjs",
+    "knowledge:check": "node scripts/build-knowledge-snapshot.cjs --check",
+    "test": "npm run knowledge:check && jest",
     "typeCheck": "tsc --noEmit"
   },
   "dependencies": {

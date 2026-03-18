@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "snapshotVersion": "2026-03-18-mvp",
+  "sources": [
+    {
+      "id": "external-remodel-facts",
+      "kind": "facts",
+      "displayName": "External Remodel Facts Snapshot",
+      "updatedOn": "2026-03-18",
+      "file": "./sources/wiki-remodel-facts.json",
+      "referenceNote": "Normalized factual remodel data prepared for future web or wiki ingestion."
+    },
+    {
+      "id": "manual-fact-overrides",
+      "kind": "facts",
+      "displayName": "Manual Fact Overrides",
+      "updatedOn": "2026-03-18",
+      "file": "./sources/manual-fact-overrides.json",
+      "referenceNote": "Local corrections for rare material labels and edge cases."
+    },
+    {
+      "id": "editorial-remodel-rules",
+      "kind": "editorial",
+      "displayName": "Editorial Recommendation Rules",
+      "updatedOn": "2026-03-18",
+      "file": "./sources/editorial-remodel-rules.json",
+      "referenceNote": "Curated payoff, utility, and explanation rules."
+    }
+  ]
+}

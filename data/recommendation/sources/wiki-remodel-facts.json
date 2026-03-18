@@ -1,0 +1,274 @@
+{
+  "entries": [
+    {
+      "id": "abukuma-kai-ni",
+      "currentAliases": [
+        "阿武隈",
+        "阿武隈改"
+      ],
+      "targetName": "阿武隈改二",
+      "targetLevel": 75,
+      "rareMaterials": [
+        "blueprint"
+      ]
+    },
+    {
+      "id": "ise-kai-ni",
+      "currentAliases": [
+        "伊勢",
+        "伊勢改"
+      ],
+      "targetName": "伊勢改二",
+      "targetLevel": 88,
+      "rareMaterials": [
+        "blueprint",
+        "catapult"
+      ]
+    },
+    {
+      "id": "hyuuga-kai-ni",
+      "currentAliases": [
+        "日向",
+        "日向改"
+      ],
+      "targetName": "日向改二",
+      "targetLevel": 90,
+      "rareMaterials": [
+        "blueprint",
+        "catapult"
+      ]
+    },
+    {
+      "id": "akizuki-kai-ni",
+      "currentAliases": [
+        "秋月",
+        "秋月改"
+      ],
+      "targetName": "秋月改二",
+      "targetLevel": 77,
+      "rareMaterials": []
+    },
+    {
+      "id": "kaga-kai-ni",
+      "currentAliases": [
+        "加賀",
+        "加賀改"
+      ],
+      "targetName": "加賀改二",
+      "targetLevel": 84,
+      "rareMaterials": [
+        "catapult"
+      ]
+    },
+    {
+      "id": "isuzu-kai-ni",
+      "currentAliases": [
+        "五十鈴",
+        "五十鈴改"
+      ],
+      "targetName": "五十鈴改二",
+      "targetLevel": 50,
+      "rareMaterials": []
+    },
+    {
+      "id": "ooshio-kai-ni",
+      "currentAliases": [
+        "大潮",
+        "大潮改"
+      ],
+      "targetName": "大潮改二",
+      "targetLevel": 65,
+      "rareMaterials": []
+    },
+    {
+      "id": "mogami-kai-ni",
+      "currentAliases": [
+        "最上",
+        "最上改"
+      ],
+      "targetName": "最上改二",
+      "targetLevel": 80,
+      "rareMaterials": []
+    },
+    {
+      "id": "kinu-kai-ni",
+      "currentAliases": [
+        "鬼怒",
+        "鬼怒改"
+      ],
+      "targetName": "鬼怒改二",
+      "targetLevel": 75,
+      "rareMaterials": []
+    },
+    {
+      "id": "fubuki-kai-ni",
+      "currentAliases": [
+        "吹雪",
+        "吹雪改"
+      ],
+      "targetName": "吹雪改二",
+      "targetLevel": 70,
+      "rareMaterials": []
+    },
+    {
+      "id": "suzuya-carrier",
+      "currentAliases": [
+        "鈴谷改二"
+      ],
+      "targetName": "鈴谷航改二",
+      "targetLevel": 88,
+      "rareMaterials": [
+        "catapult"
+      ]
+    },
+    {
+      "id": "kumano-carrier",
+      "currentAliases": [
+        "熊野改二"
+      ],
+      "targetName": "熊野航改二",
+      "targetLevel": 88,
+      "rareMaterials": [
+        "catapult"
+      ]
+    },
+    {
+      "id": "taigei-to-ryuuhou",
+      "currentAliases": [
+        "大鯨"
+      ],
+      "targetName": "龍鳳",
+      "targetLevel": 25,
+      "rareMaterials": []
+    },
+    {
+      "id": "satsuki-kai-ni",
+      "currentAliases": [
+        "皐月",
+        "皐月改"
+      ],
+      "targetName": "皐月改二",
+      "targetLevel": 75,
+      "rareMaterials": []
+    },
+    {
+      "id": "fumizuki-kai-ni",
+      "currentAliases": [
+        "文月",
+        "文月改"
+      ],
+      "targetName": "文月改二",
+      "targetLevel": 77,
+      "rareMaterials": []
+    },
+    {
+      "id": "shinshuu-maru-kai",
+      "currentAliases": [
+        "神州丸"
+      ],
+      "targetName": "神州丸改",
+      "targetLevel": 40,
+      "rareMaterials": []
+    },
+    {
+      "id": "tenryuu-kai-ni",
+      "currentAliases": [
+        "天龍",
+        "天龍改"
+      ],
+      "targetName": "天龍改二",
+      "targetLevel": 78,
+      "rareMaterials": []
+    },
+    {
+      "id": "mutsuki-kai-ni",
+      "currentAliases": [
+        "睦月",
+        "睦月改"
+      ],
+      "targetName": "睦月改二",
+      "targetLevel": 65,
+      "rareMaterials": []
+    },
+    {
+      "id": "haruna-kai-ni-otsu",
+      "currentAliases": [
+        "榛名改二"
+      ],
+      "targetName": "榛名改二乙",
+      "targetLevel": 88,
+      "rareMaterials": [
+        "action_report",
+        "other_rare"
+      ]
+    },
+    {
+      "id": "chitose-carrier",
+      "currentAliases": [
+        "千歳",
+        "千歳改",
+        "千歳甲"
+      ],
+      "targetName": "千歳航",
+      "targetLevel": 35,
+      "rareMaterials": []
+    },
+    {
+      "id": "chiyoda-carrier",
+      "currentAliases": [
+        "千代田",
+        "千代田改",
+        "千代田甲"
+      ],
+      "targetName": "千代田航",
+      "targetLevel": 35,
+      "rareMaterials": []
+    },
+    {
+      "id": "kirishima-kai-ni-c",
+      "currentAliases": [
+        "霧島改二"
+      ],
+      "targetName": "霧島改二丙",
+      "targetLevel": 90,
+      "rareMaterials": [
+        "action_report",
+        "other_rare"
+      ]
+    },
+    {
+      "id": "kongou-kai-ni-c",
+      "currentAliases": [
+        "金剛改二"
+      ],
+      "targetName": "金剛改二丙",
+      "targetLevel": 92,
+      "rareMaterials": [
+        "action_report",
+        "other_rare"
+      ]
+    },
+    {
+      "id": "hiei-kai-ni-c",
+      "currentAliases": [
+        "比叡改二"
+      ],
+      "targetName": "比叡改二丙",
+      "targetLevel": 90,
+      "rareMaterials": [
+        "action_report",
+        "other_rare"
+      ]
+    },
+    {
+      "id": "ayanami-kai-ni",
+      "currentAliases": [
+        "綾波",
+        "綾波改"
+      ],
+      "targetName": "綾波改二",
+      "targetLevel": 70,
+      "rareMaterials": []
+    }
+  ]
+}

@@ -42,6 +42,8 @@ const EDITORIAL_ALLOWED_KEYS = new Set([
   ...EDITORIAL_REQUIRED_KEYS,
 ])
 
+const UPSTREAM_ROLE_VALUES = new Set(['primary', 'fallback'])
+
 const fail = (message) => {
   throw new Error(message)
 }
@@ -90,7 +92,7 @@ const ensureRequiredKeys = (entry, requiredKeys, label) => {
 
 const buildSnapshotModule = (snapshot) => `import type { KnowledgeSnapshot } from '../types'
 
-export const KNOWLEDGE_SNAPSHOT: KnowledgeSnapshot = ${JSON.stringify(snapshot, null, 2)}
+export const KNOWLEDGE_SNAPSHOT = ${JSON.stringify(snapshot, null, 2)} as unknown as KnowledgeSnapshot
 `
 
 const manifest = readJson(manifestPath)
@@ -103,10 +105,47 @@ if (typeof manifest.snapshotVersion !== 'string' || manifest.snapshotVersion.len
   fail('source-manifest.json must declare a snapshotVersion.')
 }
 
+const preferredUpstreams = ensureArray(
+  manifest.preferredUpstreams,
+  'source-manifest.json:preferredUpstreams',
+)
 const sources = ensureArray(manifest.sources, 'source-manifest.json:sources')
 const factEntries = new Map()
 const editorialEntries = new Map()
 const provenance = new Map()
+const upstreamSummaries = preferredUpstreams
+  .map((upstream) => {
+    if (typeof upstream.id !== 'string' || upstream.id.length === 0) {
+      fail('Every preferred upstream must declare a non-empty id.')
+    }
+
+    if (typeof upstream.displayName !== 'string' || upstream.displayName.length === 0) {
+      fail(`Preferred upstream ${upstream.id} must declare a displayName.`)
+    }
+
+    if (typeof upstream.locale !== 'string' || upstream.locale.length === 0) {
+      fail(`Preferred upstream ${upstream.id} must declare a locale.`)
+    }
+
+    if (typeof upstream.priority !== 'number' || upstream.priority < 1) {
+      fail(`Preferred upstream ${upstream.id} must declare a positive priority.`)
+    }
+
+    if (!UPSTREAM_ROLE_VALUES.has(upstream.role)) {
+      fail(`Preferred upstream ${upstream.id} has an unsupported role: ${upstream.role}.`)
+    }
+
+    return {
+      id: upstream.id,
+      displayName: upstream.displayName,
+      locale: upstream.locale,
+      priority: upstream.priority,
+      role: upstream.role,
+      ...(upstream.homepage ? { homepage: upstream.homepage } : {}),
+      ...(upstream.referenceNote ? { referenceNote: upstream.referenceNote } : {}),
+    }
+  })
+  .sort((left, right) => left.priority - right.priority)
 const sourceSummaries = []
 
 for (const source of sources) {
@@ -210,6 +249,7 @@ const snapshot = {
   metadata: {
     schemaVersion: manifest.schemaVersion,
     snapshotVersion: manifest.snapshotVersion,
+    preferredUpstreams: upstreamSummaries,
     sources: sourceSummaries,
     totalEntries: entries.length,
   },

@@ -23,6 +23,11 @@ export const SettingsMain = () => (
     <Text>{`Version ${PKG.version}`}</Text>
     <Text>{`Knowledge Snapshot ${KNOWLEDGE_SNAPSHOT_METADATA.snapshotVersion}`}</Text>
     <Muted>資料來源在 build-time 整併成固定 snapshot，plugin runtime 不會直接抓外部網站。</Muted>
+    {KNOWLEDGE_SNAPSHOT_METADATA.preferredUpstreams.map((upstream) => (
+      <Text key={upstream.id}>
+        {`${upstream.priority}. ${upstream.displayName} · ${upstream.locale} · ${upstream.role === 'primary' ? '主來源' : '備援'}`}
+      </Text>
+    ))}
     {KNOWLEDGE_SNAPSHOT_METADATA.sources.map((source) => (
       <Text key={source.id}>
         {`${source.displayName} · ${source.updatedOn} · ${source.entryCount} entries`}

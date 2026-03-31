@@ -58,6 +58,18 @@ export type KnowledgeSourceSummary = {
   referenceNote?: string
 }
 
+export type KnowledgeUpstreamRole = 'primary' | 'fallback'
+
+export type KnowledgeUpstreamPreference = {
+  id: string
+  displayName: string
+  locale: string
+  priority: number
+  role: KnowledgeUpstreamRole
+  homepage?: string
+  referenceNote?: string
+}
+
 export type RemodelFactPatch = {
   id: string
   currentAliases?: string[]
@@ -94,6 +106,7 @@ export type RemodelKnowledgeEntry = {
 export type KnowledgeSnapshotMetadata = {
   schemaVersion: number
   snapshotVersion: string
+  preferredUpstreams: KnowledgeUpstreamPreference[]
   sources: KnowledgeSourceSummary[]
   totalEntries: number
 }
@@ -108,6 +121,15 @@ export type MaterialConstraintState = {
   acceptCatapultCost: boolean
   acceptActionReportCost: boolean
   acceptOtherRareMaterials: boolean
+}
+
+export type PersistedImportSession = {
+  schemaVersion: 1
+  fileName: string
+  rosterShips: RosterShip[]
+  warnings: string[]
+  constraints: MaterialConstraintState
+  savedAt: string
 }
 
 export type RecommendationBucket =

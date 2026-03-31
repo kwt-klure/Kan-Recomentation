@@ -19,10 +19,21 @@ import React, {
 import styled from 'styled-components'
 
 import { importRosterFromCsvText, InventoryCsvParseError } from './recommendation/csv'
+import { setMaterialConstraintValue } from './recommendation/constraints'
 import { buildRecommendationResult } from './recommendation/engine'
 import { DEFAULT_MATERIAL_CONSTRAINTS } from './recommendation/knowledge'
+import {
+  clearLastImportSession,
+  createPersistedImportSession,
+  loadLastImportSession,
+  saveLastImportSession,
+} from './recommendation/session'
 import { RecommendationResults } from './recommendation/view'
-import type { MaterialConstraintState, RosterShip } from './recommendation/types'
+import type {
+  MaterialConstraintState,
+  PersistedImportSession,
+  RosterShip,
+} from './recommendation/types'
 
 const Page = styled.div`
   min-height: 100%;
@@ -114,14 +125,41 @@ const getImportErrorMessage = (error: unknown) => {
   return 'CSV 讀取失敗，請確認檔案格式是否正確。'
 }
 
+const formatSavedAt = (value: string) => {
+  const parsed = new Date(value)
+  if (Number.isNaN(parsed.getTime())) {
+    return null
+  }
+
+  return new Intl.DateTimeFormat('zh-TW', {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  }).format(parsed)
+}
+
 export const AppMain: React.FC = () => {
+  const [initialSession] = useState<PersistedImportSession | null>(() =>
+    loadLastImportSession(),
+  )
   const inputRef = useRef<HTMLInputElement | null>(null)
-  const [rosterShips, setRosterShips] = useState<RosterShip[]>([])
-  const [fileName, setFileName] = useState<string | null>(null)
-  const [importWarnings, setImportWarnings] = useState<string[]>([])
+  const [rosterShips, setRosterShips] = useState<RosterShip[]>(
+    () => initialSession?.rosterShips ?? [],
+  )
+  const [fileName, setFileName] = useState<string | null>(
+    () => initialSession?.fileName ?? null,
+  )
+  const [importWarnings, setImportWarnings] = useState<string[]>(
+    () => initialSession?.warnings ?? [],
+  )
   const [importError, setImportError] = useState<string | null>(null)
   const [constraints, setConstraints] = useState<MaterialConstraintState>(
-    DEFAULT_MATERIAL_CONSTRAINTS,
+    () => initialSession?.constraints ?? DEFAULT_MATERIAL_CONSTRAINTS,
+  )
+  const [restoredSessionSavedAt, setRestoredSessionSavedAt] = useState<string | null>(
+    () => initialSession?.savedAt ?? null,
+  )
+  const [restoredFromStorage, setRestoredFromStorage] = useState(
+    () => initialSession != null,
   )
   const [isPending, startTransition] = useTransition()
 
@@ -133,11 +171,53 @@ export const AppMain: React.FC = () => {
     [constraints, rosterShips],
   )
 
-  const handleConstraintChange = useCallback((key: ConstraintKey) => {
-    setConstraints((current) => ({
-      ...current,
-      [key]: !current[key],
-    }))
+  const persistImportedState = useCallback(
+    (next: {
+      fileName: string | null
+      rosterShips: RosterShip[]
+      warnings: string[]
+      constraints: MaterialConstraintState
+    }) => {
+      if (!next.fileName || next.rosterShips.length === 0) {
+        return
+      }
+
+      const session = createPersistedImportSession({
+        fileName: next.fileName,
+        rosterShips: next.rosterShips,
+        warnings: next.warnings,
+        constraints: next.constraints,
+      })
+
+      saveLastImportSession(session)
+      setRestoredSessionSavedAt(session.savedAt)
+    },
+    [],
+  )
+
+  const handleConstraintChange = useCallback(
+    (key: ConstraintKey, checked: boolean) => {
+      const nextConstraints = setMaterialConstraintValue(constraints, key, checked)
+      setConstraints(nextConstraints)
+      persistImportedState({
+        fileName,
+        rosterShips,
+        warnings: importWarnings,
+        constraints: nextConstraints,
+      })
+    },
+    [constraints, fileName, importWarnings, persistImportedState, rosterShips],
+  )
+
+  const handleClearLastImport = useCallback(() => {
+    clearLastImportSession()
+    setFileName(null)
+    setImportWarnings([])
+    setImportError(null)
+    setRosterShips([])
+    setConstraints({ ...DEFAULT_MATERIAL_CONSTRAINTS })
+    setRestoredSessionSavedAt(null)
+    setRestoredFromStorage(false)
   }, [])
 
   const handleFileSelected = useCallback(
@@ -152,8 +232,16 @@ export const AppMain: React.FC = () => {
       try {
         const text = await file.text()
         const importResult = importRosterFromCsvText(text)
+        const nextState = {
+          fileName: file.name,
+          rosterShips: importResult.rosterShips,
+          warnings: importResult.warnings,
+          constraints,
+        }
 
         setImportError(null)
+        setRestoredFromStorage(false)
+        persistImportedState(nextState)
         startTransition(() => {
           setFileName(file.name)
           setImportWarnings(importResult.warnings)
@@ -161,13 +249,10 @@ export const AppMain: React.FC = () => {
         })
       } catch (error) {
         console.error(error)
-        setFileName(file.name)
-        setImportWarnings([])
-        setRosterShips([])
         setImportError(getImportErrorMessage(error))
       }
     },
-    [],
+    [constraints, persistImportedState],
   )
 
   return (
@@ -198,6 +283,13 @@ export const AppMain: React.FC = () => {
                 loading={isPending}
                 onClick={() => inputRef.current?.click()}
               />
+              {fileName || rosterShips.length > 0 ? (
+                <Button
+                  icon={IconNames.TRASH}
+                  text="清除上次匯入資料"
+                  onClick={handleClearLastImport}
+                />
+              ) : null}
               {fileName ? <Tag large minimal>{fileName}</Tag> : null}
             </Actions>
             <HiddenInput
@@ -206,6 +298,13 @@ export const AppMain: React.FC = () => {
               accept=".csv,text/csv"
               onChange={handleFileSelected}
             />
+            {restoredFromStorage && fileName ? (
+              <Callout intent="primary" title="已恢復上次匯入">
+                {restoredSessionSavedAt
+                  ? `已從本機記憶恢復 ${fileName}（${formatSavedAt(restoredSessionSavedAt) ?? restoredSessionSavedAt}）。`
+                  : `已從本機記憶恢復 ${fileName}。`}
+              </Callout>
+            ) : null}
           </Card>
 
           <Card>
@@ -218,7 +317,9 @@ export const AppMain: React.FC = () => {
                   label={field.label}
                   innerLabelChecked="On"
                   innerLabel="Off"
-                  onChange={() => handleConstraintChange(field.key)}
+                  onChange={(event) =>
+                    handleConstraintChange(field.key, event.currentTarget.checked)
+                  }
                 >
                   {field.help}
                 </Switch>

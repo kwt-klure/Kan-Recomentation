@@ -24,6 +24,27 @@ describe('knowledge snapshot', () => {
     expect(KNOWLEDGE_SNAPSHOT_METADATA.totalEntries).toBe(
       REMODEL_KNOWLEDGE_BASE.length,
     )
+    expect(KNOWLEDGE_SNAPSHOT_METADATA.preferredUpstreams).toEqual([
+      {
+        id: 'japanese-primary',
+        displayName: 'Japanese Primary Source',
+        locale: 'ja-JP',
+        priority: 1,
+        role: 'primary',
+        referenceNote:
+          'Default authoritative upstream for remodel facts until a specific Japanese feed is locked in.',
+      },
+      {
+        id: 'diablohu-zh-backup',
+        displayName: 'Who Calls the Fleet',
+        locale: 'zh-CN',
+        priority: 2,
+        role: 'fallback',
+        homepage: 'https://fleet.diablohu.com',
+        referenceNote:
+          'First Chinese fallback when the Japanese upstream is missing, delayed, or incomplete.',
+      },
+    ])
     expect(KNOWLEDGE_SNAPSHOT_METADATA.sources.map((source) => source.id)).toEqual([
       'external-remodel-facts',
       'manual-fact-overrides',

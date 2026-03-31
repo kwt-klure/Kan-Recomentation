@@ -12,6 +12,7 @@ The recommendation data is now built from a fixed snapshot pipeline:
 - local editorial rules stay inspectable in-repo
 - build-time merge produces a deterministic snapshot consumed by the plugin
 - plugin runtime does not fetch wiki or web data directly
+- preferred upstream policy is Japanese-first, with [Who Calls the Fleet](https://fleet.diablohu.com) as the first Chinese fallback
 
 ## What It Helps With
 
@@ -49,7 +50,8 @@ Current buckets:
    - catapult cost
    - action report cost
    - other rare material cost
-5. Read the grouped recommendation cards
+5. Reopen the plugin later to keep working from the last successful import
+6. Read the grouped recommendation cards
 
 ## MVP Boundaries
 

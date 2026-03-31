@@ -1,9 +1,28 @@
 import type { KnowledgeSnapshot } from '../types'
 
-export const KNOWLEDGE_SNAPSHOT: KnowledgeSnapshot = {
+export const KNOWLEDGE_SNAPSHOT = {
   "metadata": {
     "schemaVersion": 1,
-    "snapshotVersion": "2026-03-18-mvp",
+    "snapshotVersion": "2026-03-31-mvp",
+    "preferredUpstreams": [
+      {
+        "id": "japanese-primary",
+        "displayName": "Japanese Primary Source",
+        "locale": "ja-JP",
+        "priority": 1,
+        "role": "primary",
+        "referenceNote": "Default authoritative upstream for remodel facts until a specific Japanese feed is locked in."
+      },
+      {
+        "id": "diablohu-zh-backup",
+        "displayName": "Who Calls the Fleet",
+        "locale": "zh-CN",
+        "priority": 2,
+        "role": "fallback",
+        "homepage": "https://fleet.diablohu.com",
+        "referenceNote": "First Chinese fallback when the Japanese upstream is missing, delayed, or incomplete."
+      }
+    ],
     "sources": [
       {
         "id": "external-remodel-facts",
@@ -659,4 +678,4 @@ export const KNOWLEDGE_SNAPSHOT: KnowledgeSnapshot = {
       "primaryReason": "綾波改二是高火力泛用驅逐，適合當長期戰力投資。"
     }
   ]
-}
+} as unknown as KnowledgeSnapshot
